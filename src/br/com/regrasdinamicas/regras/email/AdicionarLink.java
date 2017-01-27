@@ -1,6 +1,7 @@
 package br.com.regrasdinamicas.regras.email;
 
 import java.util.Collection;
+import java.util.Map;
 
 import br.com.regrasdinamicas.exception.ServiceBusinessException;
 import br.com.regrasdinamicas.interfaces.RegraDeNegocio;
@@ -18,7 +19,7 @@ public class AdicionarLink implements RegraDeNegocio {
 	
 	@Override
 	public void executar() throws ServiceBusinessException {
-		System.out.println("\n --- Adicionei o link [" + link + "] no email para [" + email.getEnderecoDestino() + "]");
+		System.out.println("\n --- Adicionei o link [" + link + "] no email para [" + email.getDestino() + "]");
 		email.setLink(link);
 	}
 
@@ -33,7 +34,12 @@ public class AdicionarLink implements RegraDeNegocio {
 	}
 
 	@Override
-	public Object executarRetornoSimples() throws ServiceBusinessException {
+	public Map<?, ?> executarRetornoMapa() throws Exception {
+		return null;
+	}
+
+	@Override
+	public Object executarRetorno() throws Exception {
 		return null;
 	}
 

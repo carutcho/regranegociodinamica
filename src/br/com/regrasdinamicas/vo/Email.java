@@ -1,17 +1,25 @@
 package br.com.regrasdinamicas.vo;
 
-public class Email {
+import java.util.List;
 
-	String enderecoOrigem;
-	String enderedoDestino;
-	Arquivo anexo;
-	String link;
+import br.com.regrasdinamicas.enums.TipoMensagemEnum;
 
-	public Arquivo getAnexo() {
+public class Email extends Mensagem {
+
+	private List<Arquivo> anexo;
+	private String link;	
+
+	public Email(String enderecoOrigem, String enderedoDestino){
+		super.setOrigem(enderecoOrigem);
+		super.setDestino(enderedoDestino);
+		super.setTipo(TipoMensagemEnum.EMAIL);
+	}
+
+	public List<?> getAnexo() {
 		return anexo;
 	}
 
-	public void setAnexo(Arquivo anexo) {
+	public void setAnexo(List<Arquivo> anexo) {
 		this.anexo = anexo;
 	}
 
@@ -21,22 +29,6 @@ public class Email {
 
 	public void setLink(String link) {
 		this.link = link;
-	}
-
-	public String getEnderecoDestino() {
-		return enderedoDestino;
-	}
-
-	public void setEnderedoDestino(String enderedoDestino) {
-		this.enderedoDestino = enderedoDestino;
-	}
-
-	public String getEnderecoOrigem() {
-		return enderecoOrigem;
-	}
-
-	public void setEnderecoOrigem(String enderecoOrigem) {
-		this.enderecoOrigem = enderecoOrigem;
 	}
 
 }

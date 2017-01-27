@@ -1,6 +1,7 @@
 package br.com.regrasdinamicas.regras.notafiscal;
 
 import java.util.Collection;
+import java.util.Map;
 
 import br.com.regrasdinamicas.enums.TipoArquivoEnum;
 import br.com.regrasdinamicas.exception.ServiceBusinessException;
@@ -31,16 +32,20 @@ public class GerarNotaFiscal implements RegraDeNegocio{
 	}
 
 	@Override
-	public Object executarRetornoSimples() throws ServiceBusinessException {
+	public Object executarRetorno() throws ServiceBusinessException {
 		
-		NotaFiscal nota = new NotaFiscal();
-		nota.setRemetente(pessoa);
+		NotaFiscal nota = new NotaFiscal(pessoa);		
 		nota.setCaminho("c:/notas");
 		nota.setNome("nota_compra_produto_"+pessoa.getNome());
 		nota.setTipo(TipoArquivoEnum.PDF);
 
 		System.out.println("\n --- Nota fiscal criada para [" + pessoa.getNome() + "] com documento ["+ pessoa.getDocumento()+ "]");
 		return nota;
+	}
+
+	@Override
+	public Map<?, ?> executarRetornoMapa() throws Exception {
+		return null;
 	}
 
 }

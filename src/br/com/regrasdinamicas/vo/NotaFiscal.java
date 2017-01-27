@@ -4,6 +4,10 @@ public class NotaFiscal extends Documento {
 
 	Pessoa remetente;
 
+	public NotaFiscal(Pessoa remetente){
+		this.remetente = remetente;
+	}
+	
 	public Pessoa getRemetente() {
 		return remetente;
 	}
