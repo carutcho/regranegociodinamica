@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.regrasdinamicas.exception.ServiceBusinessException;
-import br.com.regrasdinamicas.interfaces.RegraDeNegocio;
-import br.com.regrasdinamicas.regras.email.AdicionarLink;
-import br.com.regrasdinamicas.regras.email.AnexarArquivoEmail;
-import br.com.regrasdinamicas.regras.email.EnviarEmail;
-import br.com.regrasdinamicas.regras.notafiscal.GerarNotaFiscal;
-import br.com.regrasdinamicas.vo.Arquivo;
-import br.com.regrasdinamicas.vo.Email;
+import br.com.regrasdinamicas.regras.notafiscal.EnviarEmailComprasPessoaFisica;
+import br.com.regrasdinamicas.regras.notafiscal.EnviarEmailComprasPessoaJuridica;
 import br.com.regrasdinamicas.vo.Pessoa;
 import br.com.regrasdinamicas.vo.PessoaFisica;
 import br.com.regrasdinamicas.vo.PessoaJuridica;
 
 public class RegrasNegocioController {
 
-	private static final String ENDERECO_EMPRESA = "comercial@empresa.com.br";
+	private static final String ENDERECO_EMAIL_EMPRESA = "comercial@empresa.com.br";
 	
 	public static void main (String args[]){
 	
@@ -45,7 +40,7 @@ public class RegrasNegocioController {
 		System.out.println("\n\n\n  -------------- REGRA DE NEGOCIO COM ERRO ---------------- \n\n");
 		
 		List<Pessoa> pessoasEnviarEmailException = new ArrayList<Pessoa>();
-		PessoaFisica pessoaComException = new PessoaFisica("Reinaldo","213.213.123-1","reinaldo.torresrj@gmail.comm.br");
+		PessoaFisica pessoaComException = new PessoaFisica("Reinaldo","213.213.123-1",null);
 		
 		pessoasEnviarEmailException.add(pessoaComException);
 		
@@ -59,39 +54,22 @@ public class RegrasNegocioController {
 		
 	}
 
-	//TODO: transformar em RN
 	private static void enviarEmailCompras(List<Pessoa> pessoasEnviarEmail) throws Exception {
 		
 		for (Pessoa pessoa : pessoasEnviarEmail) {
-			Email emailEmpresa = new Email(ENDERECO_EMPRESA, pessoa.getEmail());
 			
-			EnviarEmail enviarEmail = new EnviarEmail(pessoa, emailEmpresa);			
 			if (pessoa instanceof PessoaJuridica){
 				System.out.println("\n --- REGRA DE PESSOA JURIDICA --- \n");
-				enviarEmailPessoaJuridica(emailEmpresa, pessoa, enviarEmail);								
+				EnviarEmailComprasPessoaJuridica enviarEmail = new EnviarEmailComprasPessoaJuridica(pessoa, ENDERECO_EMAIL_EMPRESA);
+				enviarEmail.executar();
 			}else{
 				System.out.println("\n --- REGRA DE PESSOA FISICA --- \n");
-				enviarEmailPessoaFisica(enviarEmail);
+				EnviarEmailComprasPessoaFisica enviarEmail = new EnviarEmailComprasPessoaFisica(pessoa, ENDERECO_EMAIL_EMPRESA);
+				enviarEmail.executar();
 			}
 		}
 	}
 
-	//TODO: transformar em RN
-	private static void enviarEmailPessoaFisica(EnviarEmail enviarEmail) throws Exception {
-		enviarEmail.executar();
-	}
 
-	//TODO: transformar em RN
-	private static void enviarEmailPessoaJuridica(Email email, Pessoa pessoa, EnviarEmail enviarEmail) throws ServiceBusinessException, Exception {
-		
-		List<RegraDeNegocio> regrasEnvio = new ArrayList<RegraDeNegocio>();
-		regrasEnvio.add(new AdicionarLink(email, "www.linkedin.com.br/reinaldo"));
-		
-		GerarNotaFiscal gerarNota = new GerarNotaFiscal(pessoa);
-		Arquivo nota = (Arquivo) gerarNota.executarRetorno();
-		
-		regrasEnvio.add(new AnexarArquivoEmail(email, nota));
-		enviarEmail.executar(regrasEnvio);
-	}
 		
 }
