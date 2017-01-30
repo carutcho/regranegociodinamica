@@ -54,7 +54,8 @@ public class RegrasNegocioController {
 		
 	}
 
-	private static void enviarEmailCompras(List<Pessoa> pessoasEnviarEmail) throws Exception {
+	//INTERFACE DO SERVICO
+	public static void enviarEmailCompras(List<Pessoa> pessoasEnviarEmail) throws Exception {
 		
 		for (Pessoa pessoa : pessoasEnviarEmail) {
 			
